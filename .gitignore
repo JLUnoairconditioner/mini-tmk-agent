@@ -1,0 +1,93 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+*.cover
+
+# Go workspace file
+go.work
+
+# Dependency directories
+vendor/
+
+# Go mod download cache
+go/pkg/mod/
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+mini-tmk-agent
+mini-tmk-agent.exe
+dist/
+build/
+
+# Test outputs
+*.prof
+*.pprof
+coverage.out
+*.log
+
+# Audio files (for testing)
+*.mp3
+*.wav
+*.m4a
+*.flac
+*.pcm
+
+# Output files
+output/
+results/
+*.txt
+!README.txt
+
+# macOS specific
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux specific
+.Xauthority
+.xsession-errors*
+
+# Development temporary files
+*.tmp
+*.bak
+*.backup
+*.temp
+
+# Misc
+.cursor/
+*.md5
+*.sha1
