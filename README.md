@@ -145,7 +145,16 @@ go build -o mini-tmk-agent ./cmd/mini-tmk-agent
 
 # 或直接运行
 go run ./cmd/mini-tmk-agent stream --source-lang zh --target-lang en
-```
+
+> 如果在运行 `go run` 时遇到端口冲突或网络代理导致的连接问题，请先清空当前终端的代理设置：
+>
+> ```powershell
+> $env:HTTP_PROXY=""
+> $env:HTTPS_PROXY=""
+> $env:ALL_PROXY=""
+> ```
+>
+> 然后重新运行命令。
 
 ### 5. 使用示例
 
@@ -166,7 +175,7 @@ go run ./cmd/mini-tmk-agent stream --source-lang zh --target-lang en
 
 ```bash
 # 基础用法
-./mini-tmk-agent transcript --file meeting.mp3 --output result.txt
+go run ./cmd/mini-tmk-agent transcript --file meeting.mp3 --output result.txt
 
 # 指定源和目标语言
 ./mini-tmk-agent transcript \
