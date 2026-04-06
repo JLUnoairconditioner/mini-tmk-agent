@@ -6,6 +6,21 @@
 
 Mini TMK Agent (Transcription & Machine Translation Kit) 提供两种工作模式：
 
+> ⚠️ 重要提醒：
+> - Windows 用户在 `stream` 模式下需要本地可用的 PortAudio 动态链接库（如 `portaudio.dll`）。
+> - 仓库中未包含 Windows 平台的音频库二进制文件，请自行安装 PortAudio 或通过 MinGW/GCC 编译环境准备依赖。
+> - 如果运行过程中遇到网络代理问题，请清空终端代理环境变量后重试：
+>   - PowerShell:
+>     ```powershell
+>     $env:HTTP_PROXY=""
+>     $env:HTTPS_PROXY=""
+>     $env:ALL_PROXY=""
+>     ```
+>   - Bash / WSL:
+>     ```bash
+>     unset HTTP_PROXY HTTPS_PROXY ALL_PROXY
+>     ```
+
 ### 模式一：流式同传 (Stream Mode)
 实时监听麦克风，自动转录并翻译你的语音。支持实时上次翻译，适合会议、讲座等场景。
 
