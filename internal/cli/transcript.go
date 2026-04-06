@@ -18,22 +18,22 @@ import (
 func NewTranscriptCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "transcript",
-		Short: "Transcribe audio files to text",
-		Long: `Transcript mode processes audio files and generates transcription and translation.
+		Short: "将音频文件转录为文本",
+		Long: `Transcript 模式处理音频文件，并生成转录和翻译结果。
 
-Supported formats: MP3, WAV, PCM, M4A, FLAC
+支持格式：MP3、WAV、PCM、M4A、FLAC
 
-Example:
+示例：
   mini-tmk-agent transcript --file audio.mp3 --output result.txt --source-lang zh --target-lang en`,
 		RunE: runTranscriptCmd,
 	}
 
-	cmd.Flags().String("file", "", "Path to the audio file (required)")
-	cmd.Flags().String("output", "", "Path to the output file (required)")
-	cmd.Flags().String("source-lang", "zh", "Source language code (zh, en, es, ja)")
-	cmd.Flags().String("target-lang", "en", "Target language code (zh, en, es, ja)")
-	cmd.Flags().Bool("translate", true, "Enable translation (default: true)")
-	cmd.Flags().Bool("verbose", false, "Enable verbose output")
+	cmd.Flags().String("file", "", "音频文件路径（必填）")
+	cmd.Flags().String("output", "", "输出文件路径（必填）")
+	cmd.Flags().String("source-lang", "zh", "源语言代码 (zh, en, es, ja)")
+	cmd.Flags().String("target-lang", "en", "目标语言代码 (zh, en, es, ja)")
+	cmd.Flags().Bool("translate", true, "是否启用翻译（默认: true）")
+	cmd.Flags().Bool("verbose", false, "启用详细输出")
 
 	cmd.MarkFlagRequired("file")
 	cmd.MarkFlagRequired("output")
@@ -51,13 +51,13 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 
 	// 验证文件存在
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		logger.PrintError(fmt.Sprintf("Audio file not found: %s", filePath))
+		logger.PrintError(fmt.Sprintf("未找到音频文件：%s", filePath))
 		return fmt.Errorf("file not found: %s", filePath)
 	}
 
 	// 验证语言代码
 	if !isValidLanguage(sourceLang) || !isValidLanguage(targetLang) {
-		logger.PrintError("Invalid language code. Supported: zh, en, es, ja")
+		logger.PrintError("语言代码无效。支持：zh, en, es, ja")
 		return fmt.Errorf("invalid language code")
 	}
 
@@ -74,17 +74,17 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 
 	// 验证 API 密钥
 	if cfg.ASRAPIKey == "" {
-		logger.PrintError("ASR_API_KEY is not set. Please set the environment variable.")
+		logger.PrintError("未设置 ASR_API_KEY，请设置环境变量。")
 		return fmt.Errorf("missing ASR_API_KEY")
 	}
 
 	if shouldTranslate && cfg.TranslationAPIKey == "" {
-		logger.PrintError("TRANSLATION_API_KEY is not set. Please set the environment variable.")
+		logger.PrintError("未设置 TRANSLATION_API_KEY，请设置环境变量。")
 		return fmt.Errorf("missing TRANSLATION_API_KEY")
 	}
 
-	logger.PrintInfo(fmt.Sprintf("Processing audio file: %s", filePath))
-	logger.PrintInfo(fmt.Sprintf("Source language: %s, Target language: %s",
+	logger.PrintInfo(fmt.Sprintf("处理音频文件：%s", filePath))
+	logger.PrintInfo(fmt.Sprintf("源语言：%s，目标语言：%s",
 		getLanguageName(sourceLang), getLanguageName(targetLang)))
 
 	// 读取音频文件
@@ -99,7 +99,7 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 
 	// 检查文件大小（OpenAI Whisper API 限制 25MB）
 	if fileSize > 25*1024*1024 {
-		logger.PrintWarning("File size exceeds 25MB. Will be split into chunks.")
+		logger.PrintWarning("文件大小超过 25MB，将拆分成多个块处理。")
 	}
 
 	// 创建 AI 客户端
@@ -109,7 +109,7 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 		translationClient = ai.NewTranslationClient(cfg.TranslationProvider, cfg.TranslationAPIKey, cfg.TranslationURL, cfg.TranslationModel)
 	}
 
-	logger.PrintInfo("Starting transcription...")
+	logger.PrintInfo("开始转录...")
 
 	// 获取音频数据
 	audioData := audioFile.GetData()
@@ -123,12 +123,12 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 	}
 	asrDuration := time.Since(startTime)
 
-	logger.PrintSuccess(fmt.Sprintf("Transcription complete (took %.2fs)", asrDuration.Seconds()))
+	logger.PrintSuccess(fmt.Sprintf("转录完成（耗时 %.2fs）", asrDuration.Seconds()))
 	logger.PrintSourceText(sourceLang, transcribedText)
 
 	var translatedText string
 	if shouldTranslate {
-		logger.PrintInfo("Starting translation...")
+		logger.PrintInfo("开始翻译...")
 		startTime = time.Now()
 		translatedText, err = translationClient.Translate(transcribedText, sourceLang, targetLang)
 		if err != nil {
@@ -137,7 +137,7 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 		}
 		translationDuration := time.Since(startTime)
 
-		logger.PrintSuccess(fmt.Sprintf("Translation complete (took %.2fs)", translationDuration.Seconds()))
+		logger.PrintSuccess(fmt.Sprintf("翻译完成（耗时 %.2fs）", translationDuration.Seconds()))
 		logger.PrintTargetText(targetLang, translatedText)
 	}
 
@@ -150,7 +150,7 @@ func runTranscriptCmd(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	logger.PrintSuccess(fmt.Sprintf("Results saved to: %s", outputPath))
+	logger.PrintSuccess(fmt.Sprintf("结果已保存到：%s", outputPath))
 
 	// 打印文件统计
 	if verbose {
@@ -168,20 +168,20 @@ func generateOutput(sourceLang, targetLang, transcribedText, translatedText stri
 
 	// 添加元数据
 	if verbose {
-		output += fmt.Sprintf("=== Transcription Report ===\n")
-		output += fmt.Sprintf("Generated: %s\n", time.Now().Format("2006-01-02 15:04:05"))
-		output += fmt.Sprintf("Source Language: %s\n", getLanguageName(sourceLang))
-		output += fmt.Sprintf("Target Language: %s\n", getLanguageName(targetLang))
+		output += fmt.Sprintf("=== 转录报告 ===\n")
+		output += fmt.Sprintf("生成时间：%s\n", time.Now().Format("2006-01-02 15:04:05"))
+		output += fmt.Sprintf("源语言：%s\n", getLanguageName(sourceLang))
+		output += fmt.Sprintf("目标语言：%s\n", getLanguageName(targetLang))
 		output += fmt.Sprintf("\n")
 	}
 
 	// 添加转录文本
-	output += fmt.Sprintf("=== %s Transcription ===\n", getLanguageName(sourceLang))
+	output += fmt.Sprintf("=== %s 转录 ===\n", getLanguageName(sourceLang))
 	output += transcribedText + "\n\n"
 
 	// 添加翻译文本
 	if shouldTranslate {
-		output += fmt.Sprintf("=== %s Translation ===\n", getLanguageName(targetLang))
+		output += fmt.Sprintf("=== %s 翻译 ===\n", getLanguageName(targetLang))
 		output += translatedText + "\n"
 	}
 

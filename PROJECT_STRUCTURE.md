@@ -6,7 +6,6 @@ mini-tmk-agent/
 ├── 📄 【配置与文档】
 │   ├── go.mod                    # Go 模块定义
 │   ├── go.sum                    # 依赖锁定
-│   ├── Makefile                  # 开发快捷命令
 │   ├── .env.example              # 环境变量模板
 │   └── .gitignore                # Git 忽略规则
 │
@@ -334,9 +333,6 @@ type TranslationClient struct {
 ```bash
 # 生成可执行文件
 go build -o mini-tmk-agent ./cmd/mini-tmk-agent
-
-# 或者使用 Makefile
-make build
 ```
 
 ### 运行
@@ -346,10 +342,6 @@ make build
 
 # Transcript 模式
 ./mini-tmk-agent transcript --file audio.mp3 --output result.txt
-
-# 使用 Makefile
-make run-stream
-make run-transcript
 ```
 
 ---

@@ -108,7 +108,6 @@ pkg/
 ```
 go.mod                               # Go 模块定义
 go.sum                               # 依赖锁定
-Makefile                             # [54 行] 开发命令
 .env.example                         # [36 行] 环境变量模板  
 .gitignore                           # [60 行] Git 忽略规则
 ```
@@ -202,17 +201,6 @@ Strategy Pattern 支持:
 ---
 
 ## 🔧 开发工具支持
-
-### Makefile 快捷命令
-```bash
-make build              # 编译项目
-make run-stream         # 运行 Stream 模式
-make run-transcript     # 运行 Transcript 模式
-make test               # 运行测试
-make format             # 格式化代码
-make lint               # 代码检查
-make clean              # 清理构建产物
-```
 
 ---
 

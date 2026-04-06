@@ -20,17 +20,16 @@ import (
 func NewStreamCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "stream",
-		Short: "Real-time audio streaming with live transcription and translation",
-		Long: `Stream mode enables real-time transcription and translation from your microphone.
+		Short: "实时音频流转录和翻译",
+		Long: `Stream 模式可从麦克风实时转录并翻译音频。
 
-It listens to your microphone continuously and performs live translation
-of your speech to the target language.`,
+它会持续监听麦克风，并将你的语音实时翻译成目标语言。`,
 		RunE: runStreamCmd,
 	}
 
-	cmd.Flags().String("source-lang", "zh", "Source language code (zh, en, es, ja)")
-	cmd.Flags().String("target-lang", "en", "Target language code (zh, en, es, ja)")
-	cmd.Flags().Bool("verbose", false, "Enable verbose output")
+	cmd.Flags().String("source-lang", "zh", "源语言代码 (zh, en, es, ja)")
+	cmd.Flags().String("target-lang", "en", "目标语言代码 (zh, en, es, ja)")
+	cmd.Flags().Bool("verbose", false, "启用详细输出")
 
 	return cmd
 }
@@ -42,29 +41,29 @@ func runStreamCmd(cmd *cobra.Command, args []string) error {
 
 	// 验证语言代码
 	if !isValidLanguage(sourceLang) || !isValidLanguage(targetLang) {
-		logger.PrintError(fmt.Sprintf("Invalid language code. Supported: zh, en, es, ja"))
+		logger.PrintError(fmt.Sprintf("语言代码无效。支持：zh, en, es, ja"))
 		return fmt.Errorf("invalid language code")
 	}
 
 	if sourceLang == targetLang {
-		logger.PrintWarning("Source and target languages are the same")
+		logger.PrintWarning("源语言和目标语言相同")
 	}
 
 	cfg := config.LoadConfig()
 
 	// 验证 API 密钥
 	if cfg.ASRAPIKey == "" {
-		logger.PrintError("ASR_API_KEY is not set. Please set the environment variable.")
+		logger.PrintError("未设置 ASR_API_KEY，请设置环境变量。")
 		return fmt.Errorf("missing ASR_API_KEY")
 	}
 
 	if cfg.TranslationAPIKey == "" {
-		logger.PrintError("TRANSLATION_API_KEY is not set. Please set the environment variable.")
+		logger.PrintError("未设置 TRANSLATION_API_KEY，请设置环境变量。")
 		return fmt.Errorf("missing TRANSLATION_API_KEY")
 	}
 
-	logger.PrintInfo(fmt.Sprintf("Starting stream mode: %s -> %s", sourceLang, targetLang))
-	logger.PrintInfo("Initializing microphone...")
+	logger.PrintInfo(fmt.Sprintf("启动 Stream 模式：%s -> %s", sourceLang, targetLang))
+	logger.PrintInfo("初始化麦克风...")
 
 	// 创建录音机
 	recorder, err := audio.NewRecorder(cfg.SampleRate, cfg.NumChannels, cfg.FramesPerBuffer)
@@ -80,8 +79,8 @@ func runStreamCmd(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	logger.PrintSuccess("Microphone initialized. Listening...")
-	logger.PrintInfo("Press Ctrl+C to stop")
+	logger.PrintSuccess("麦克风已初始化，开始监听...")
+	logger.PrintInfo("按 Ctrl+C 停止")
 
 	// 创建 AI 客户端
 	asrClient := ai.NewASRClient(cfg.ASRProvider, cfg.ASRAPIKey, cfg.ASRURL, cfg.ASRModel)
@@ -147,9 +146,9 @@ func runStreamCmd(cmd *cobra.Command, args []string) error {
 						totalSamples += len(buf)
 					}
 					audioDurationMs := (totalSamples * 1000) / 16000 // ms
-					
+
 					logger.PrintInfo(fmt.Sprintf("✓ VAD 判断为静音，发送 %.1f 秒的音频进行识别...", float64(audioDurationMs)/1000))
-					
+
 					// 合并音频帧
 					var fullAudio []float32
 					for _, buf := range audioBuffer {
@@ -271,10 +270,10 @@ func isValidLanguage(lang string) bool {
 
 func getLanguageName(lang string) string {
 	names := map[string]string{
-		"zh": "Chinese",
-		"en": "English",
-		"es": "Spanish",
-		"ja": "Japanese",
+		"zh": "中文",
+		"en": "英文",
+		"es": "西班牙文",
+		"ja": "日文",
 	}
 	if name, ok := names[lang]; ok {
 		return name

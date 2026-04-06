@@ -104,34 +104,10 @@ go build -o mini-tmk-agent ./cmd/mini-tmk-agent
 ```bash
 # 中日交流，需要双向翻译
 # 监听中文
-./mini-tmk-agent stream --source-lang zh --target-lang ja &
+./mini-tmk-agent stream --source-lang zh --target-lang ja 
 
 # 在另一个终端监听日文
 ./mini-tmk-agent stream --source-lang ja --target-lang zh
-```
-
----
-
-## 🔧 Makefile 快捷命令
-
-```bash
-# 构建
-make build
-
-# 只运行 Stream 模式
-make run-stream
-
-# 只运行 Transcript 模式
-make run-transcript
-
-# 格式化代码
-make format
-
-# 清理编译产物
-make clean
-
-# 显示所有命令
-make help
 ```
 
 ---

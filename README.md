@@ -122,6 +122,9 @@ cp .env.example .env
 
 编辑 `.env` 并填入你的 API 密钥：
 
+Windows 环境运行须知：
+由于本项目 stream 模式依赖底层的 PortAudio C语言库，考虑到跨平台兼容性与 Git 规范，代码仓库中未包含 .dll 二进制文件。Windows 开发者拉取代码后，请确保本地已配置 MinGW/GCC 编译环境，或在根目录自行补充相关的音频动态链接库（如 portaudio.dll）后再执行 go run。
+
 ```bash
 # ASR 服务配置
 ASR_PROVIDER=openai              # openai 或 siliconflow
