@@ -152,9 +152,9 @@ go run ./cmd/mini-tmk-agent stream --source-lang zh --target-lang en
 > 如果在运行 `go run` 时遇到端口冲突或网络代理导致的连接问题，请先清空当前终端的代理设置：
 >
 > ```powershell
-> $env:HTTP_PROXY=""
-> $env:HTTPS_PROXY=""
-> $env:ALL_PROXY=""
+$env:HTTP_PROXY=""
+$env:HTTPS_PROXY=""
+$env:ALL_PROXY=""
 > ```
 >
 > 然后重新运行命令。
