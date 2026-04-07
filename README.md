@@ -411,7 +411,7 @@ MIT License - 详见 LICENSE 文件
 
 ## 联系方式和支持
 
-- 📧 Email: support@mini-tmk.dev
+- 📧 Email: xuzz0322@gmail.com
 - 🐛 Issues: GitHub Issues
 - 💬 讨论: GitHub Discussions
 
