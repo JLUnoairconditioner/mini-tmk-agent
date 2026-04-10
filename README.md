@@ -195,6 +195,7 @@ $env:ALL_PROXY=""
 # 基础用法
 go run ./cmd/mini-tmk-agent transcript --file meeting.mp3 --output result.txt
 
+go run ./cmd/mini-tmk-agent transcript --file test.mp3 --output result.txt --source-lang en --target-lang zh 
 # 指定源和目标语言
 ./mini-tmk-agent transcript \
   --file audio.mp3 \
